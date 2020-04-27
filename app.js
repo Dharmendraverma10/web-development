@@ -83,7 +83,7 @@ function nextPlayer(){
 document.querySelector('.btn-new').addEventListener('click',start);
 
 
-
+//When game load initial setup
 function start(){
     scores = [0, 0];
     roundScore = 0;
