@@ -1,50 +1,53 @@
-var scores,roundScore,activePlayer;
+var scores,roundScore,activePlayer,gamePlaying;
 
 start();
 
 document.querySelector('.btn-roll').addEventListener('click', function(){
     
-    //Randomnumber
-    var dice =  Math.floor(Math.random() * 6) + 1;
-    
-    //Display the result
-    var diceDom = document.querySelector('.dice');
-    diceDom.style.display ='block';
-    diceDom.src = 'dice-'+dice+'.png';
-    
-    
-    
-    //update the results if the dice not equal to 1
-    if(dice!==1){
-        roundScore +=dice;
-        document.querySelector('#current-'+activePlayer).textContent = roundScore;
+    if(gamePlaying){
+          //Randomnumber
+          var dice = Math.floor(Math.random() * 6) + 1;
         
-    } else{
-        //next player
-        nextPlayer();
+          //Display the result
+          var diceDom = document.querySelector('.dice');
+          diceDom.style.display = 'block';
+          diceDom.src = 'dice-' + dice + '.png';
         
+        
+        
+          //update the results if the dice not equal to 1
+          if (dice !== 1) {
+              roundScore += dice;
+              document.querySelector('#current-' + activePlayer).textContent = roundScore;
+        
+          } else {
+              //next player
+              nextPlayer();
+        
+          }
     }
-    
 });
 
 document.querySelector('.btn-hold').addEventListener('click',function(){
-  console.log(10);
-  //Add current score to global score
-  scores[activePlayer] += roundScore;
   
-  //update ui
-  document.querySelector('#score-'+activePlayer).textContent = scores[activePlayer];
-  
-  //check if player won or not
-  if(scores[activePlayer] >=20){
-      document.querySelector('#name-'+activePlayer).textContent = '   Winner! ';
-      document.querySelector('.dice').style.display = 'none';
-      document.querySelector('.player-'+activePlayer+'-panel ').classList.add('winner');
-      document.querySelector('.player-'+activePlayer+'-panel ').classList.remove('active');
-  } else {
-   nextPlayer();   
+  if(gamePlaying){
+      //Add current score to global score
+      scores[activePlayer] += roundScore;
+      
+      //update ui
+      document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+      
+      //check if player won or not
+      if (scores[activePlayer] >= 20) {
+          document.querySelector('#name-' + activePlayer).textContent = '   Winner! ';
+          document.querySelector('.dice').style.display = 'none';
+          document.querySelector('.player-' + activePlayer + '-panel ').classList.add('winner');
+          document.querySelector('.player-' + activePlayer + '-panel ').classList.remove('active');
+          gamePlaying=false;
+      } else {
+          nextPlayer();
+      }
   }
-    
 });
 
 function nextPlayer(){
@@ -66,7 +69,7 @@ function start(){
     scores = [0, 0];
     roundScore = 0;
     activePlayer = 0;
-    
+    gamePlaying=true;
     
     
     document.querySelector('.dice').style.display = 'none';
