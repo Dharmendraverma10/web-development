@@ -2,6 +2,8 @@ var scores,roundScore,activePlayer,gamePlaying;
 
 start();
 
+var lastDice;
+
 document.querySelector('.btn-roll').addEventListener('click', function(){
     
     if(gamePlaying){
@@ -16,7 +18,13 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
         
         
           //update the results if the dice not equal to 1
-          if (dice !== 1) {
+          if(dice === 6 && lastDice===6){
+             //player looses his score
+             scores[activePlayer] = 0;
+             ocument.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+             nextPlayer();
+             
+          }else if (dice !== 1) {
               roundScore += dice;
               document.querySelector('#current-' + activePlayer).textContent = roundScore;
         
@@ -25,7 +33,8 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
               nextPlayer();
         
           }
-    }
+          lastDice = dice; 
+    } 
 });
 
 document.querySelector('.btn-hold').addEventListener('click',function(){
@@ -37,8 +46,18 @@ document.querySelector('.btn-hold').addEventListener('click',function(){
       //update ui
       document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
       
+      
+      // setting final score from user
+      var input = document.querySelector('.final-score').value;
+      var winningScore;
+      if(input){
+          winningScore = input;
+      }else{
+          winningScore = 100;
+      }
+      
       //check if player won or not
-      if (scores[activePlayer] >= 20) {
+      if (scores[activePlayer] >=winningScore) {
           document.querySelector('#name-' + activePlayer).textContent = '   Winner! ';
           document.querySelector('.dice').style.display = 'none';
           document.querySelector('.player-' + activePlayer + '-panel ').classList.add('winner');
@@ -86,7 +105,7 @@ function start(){
    document.querySelector('.player-1-panel ').classList.remove('active');
    document.querySelector('.player-0-panel ').classList.add('active');
     
-    
+   
 };
 
 
